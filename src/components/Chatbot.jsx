@@ -75,6 +75,20 @@ const Chatbot = () => {
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
+    const containerRef = useRef(null);
+
+    // Close when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (containerRef.current && !containerRef.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        };
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isOpen]);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -115,7 +129,7 @@ const Chatbot = () => {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+        <div ref={containerRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
             <AnimatePresence>
                 {isOpen && !isMinimized && (
                     <motion.div
@@ -166,8 +180,8 @@ const Chatbot = () => {
                                         </div>
                                     )}
                                     <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.from === 'user'
-                                            ? 'bg-brand-600 text-white rounded-tr-sm'
-                                            : 'bg-white text-slate-700 rounded-tl-sm border border-slate-100'
+                                        ? 'bg-brand-600 text-white rounded-tr-sm'
+                                        : 'bg-white text-slate-700 rounded-tl-sm border border-slate-100'
                                         }`}>
                                         <div className="space-y-0.5">{formatMessage(msg.text)}</div>
                                         <p className={`text-[10px] mt-1 ${msg.from === 'user' ? 'text-white/60 text-right' : 'text-slate-400'}`}>{msg.time}</p>
