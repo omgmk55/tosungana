@@ -77,17 +77,21 @@ const Chatbot = () => {
     const messagesEndRef = useRef(null);
     const containerRef = useRef(null);
 
-    // Close when clicking outside
+    // Close when clicking or tapping outside (mouse + mobile touch)
     useEffect(() => {
-        const handleClickOutside = (e) => {
+        const handleOutside = (e) => {
             if (containerRef.current && !containerRef.current.contains(e.target)) {
                 setIsOpen(false);
             }
         };
         if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener('mousedown', handleOutside);
+            document.addEventListener('touchstart', handleOutside);
         }
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleOutside);
+            document.removeEventListener('touchstart', handleOutside);
+        };
     }, [isOpen]);
 
     useEffect(() => {
@@ -129,7 +133,7 @@ const Chatbot = () => {
     };
 
     return (
-        <div ref={containerRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+        <div ref={containerRef} className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 flex flex-col items-end gap-3">
             <AnimatePresence>
                 {isOpen && !isMinimized && (
                     <motion.div
@@ -137,8 +141,11 @@ const Chatbot = () => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.8, y: 20 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                        className="w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
-                        style={{ height: '520px' }}
+                        className="bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
+                        style={{
+                            width: 'min(92vw, 384px)',
+                            height: 'min(80vh, 520px)',
+                        }}
                     >
                         {/* Header */}
                         <div className="bg-gradient-to-r from-brand-600 to-brand-700 p-4 flex items-center justify-between shrink-0">
