@@ -68,9 +68,14 @@ const Navbar = () => {
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
                             A
                         </div>
-                        <span className={`font-display font-bold text-xl tracking-tight ${textColorClass}`}>
-                            A.J.A.T (Tosungana)
-                        </span>
+                        <div className="flex flex-col leading-tight">
+                            <span className={`font-display font-bold text-xl tracking-tight ${textColorClass}`}>
+                                A.J.A.T
+                            </span>
+                            <span className={`text-[10px] font-medium tracking-wide uppercase opacity-70 ${textColorClass}`}>
+                                Association des Jeunes en Action Tosungana
+                            </span>
+                        </div>
                     </Link>
 
                     {/* Desktop Menu */}
