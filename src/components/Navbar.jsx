@@ -65,9 +65,11 @@ const Navbar = () => {
                 <div className="flex justify-between items-center">
 
                     <Link to="/" className="flex items-center gap-2">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-xl shadow-lg">
-                            A
-                        </div>
+                        <img
+                            src="/tosungana/logo.jpg"
+                            alt="A.J.A.T Logo"
+                            className="w-12 h-12 rounded-full object-cover shadow-lg border-2 border-white/30"
+                        />
                         <div className="flex flex-col leading-tight">
                             <span className={`font-display font-bold text-xl tracking-tight ${textColorClass}`}>
                                 A.J.A.T
