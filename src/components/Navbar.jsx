@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Heart, User, LogOut, Settings, LayoutDashboard } from 'lucide-react';
 
@@ -11,8 +11,31 @@ const Navbar = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [user, setUser] = useState(null); // null when logged out, object when logged in
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+    const mobileMenuRef = useRef(null);
 
     const location = useLocation();
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Close mobile menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+                setIsMobileMenuOpen(false);
+            }
+        };
+        if (isMobileMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isMobileMenuOpen]);
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -37,7 +60,7 @@ const Navbar = () => {
     const linkColorClass = isDarkPageAtTop ? 'text-slate-200 hover:text-white' : 'text-slate-600 hover:text-brand-600';
 
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled || location.pathname !== '/' ? 'glass py-4' : 'bg-transparent py-6'}`}>
+        <nav ref={mobileMenuRef} className={`fixed w-full z-50 transition-all duration-300 ${isScrolled || location.pathname !== '/' ? 'glass py-4' : 'bg-transparent py-6'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center">
 
